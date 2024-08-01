@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TextStage = () => {
     const [input, setInput] = useState("");
-    const [outstanding, setOutstanding] = useState("Hi");
+    const [outstanding, setOutstanding] = useState("Hi, this is an example of text that you can practice with. Please feel free to provide your own should you so desire.");
+    useEffect(() => {
+        document.getElementById("text-stage").focus();
+    }, [])
+    /**
+     * Handles main logic in regards to typing
+     */
     const handleTyping = (e) => {
         e.preventDefault();
         console.log(e.key)
@@ -12,11 +18,13 @@ const TextStage = () => {
             /* TODO handle space */
         }
 
-        if (e.key == outstanding[0].toLowerCase()) {
+        // If the keys match up change the color
+        if (e.key == outstanding[0]) {
             /* Add it in a span that changes the colors*/
             setOutstanding(outstanding.slice(1));
         }
 
+        // If the outstanding text is exhausted display victory screen
         if (outstanding.length === 1 || !outstanding) {
             document.getElementById("text-stage").classList.add("hidden");
             document.getElementById("text-done").classList.remove("hidden");
@@ -27,7 +35,7 @@ const TextStage = () => {
 
     return (
         <div>
-            <div id="text-stage" className="caret-transparent text-4xl text-blue-200 focus:outline-none" tabIndex="0" contentEditable onKeyDown={handleTyping}>
+            <div id="text-stage" className="caret-transparent text-4xl text-blue-200 focus:outline-none p-4 lg:px" tabIndex="0" contentEditable onKeyDown={handleTyping}>
                 {outstanding}
             </div>
  
