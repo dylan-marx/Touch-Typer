@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 
-const TextStage = () => {
+const TextStage = ({text}) => {
     const [typed, setTyped] = useState("");
     const [wrong, setWrong] = useState("");
     const [replace, setReplace] = useState("");
-    const [outstanding, setOutstanding] = useState("example");
-    const [initialText, setInitialText] = useState(outstanding);
+    const [outstanding, setOutstanding] = useState(text);
+    const [initialText, setInitialText] = useState(text);
+
     useEffect(() => {
-        document.getElementById("text-stage").focus();
-    }, []);
+        setOutstanding(text);
+        setInitialText(text);
+        setTyped("");
+        setWrong("");
+        setReplace("");
+      }, [text]);
 
     useEffect(() => {
         if (outstanding.length === 0 && wrong.length === 0) {
@@ -48,18 +53,12 @@ const TextStage = () => {
             }
         }
 
-        console.log("outstanding => " + outstanding);
-        console.log("wrong => " + wrong);
-        console.log("replace => " + replace);
-    
-
     const begin = () => {
         document.getElementById("text-stage").focus();
         document.getElementById("begin-button").classList.add("hidden");
     }
 
     const reset = () => {
-        location.reload();
         setOutstanding(initialText);
         document.getElementById("text-stage").focus();
         document.getElementById("begin-button").classList.add("hidden");
