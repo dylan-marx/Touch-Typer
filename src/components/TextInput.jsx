@@ -17,8 +17,8 @@ const TextInput = ({textSetter, text}) => {
         }
     }
     return (
-        <div>
-            <textarea id="text-input" value={inputText} onChange={handleChange} placeholder="Please provide your own text." className="text-xl bg-slate-500 w-80 border-2 border-blue-200"></textarea>
+        <div className="flex justify-center m-6 h-5/6">
+            <textarea id="text-input" value={inputText} onChange={handleChange} placeholder="Please provide your own text." className="text-xl bg-slate-500 w-3/4 border-2 border-blue-200"></textarea>
         </div>
     );
 }
