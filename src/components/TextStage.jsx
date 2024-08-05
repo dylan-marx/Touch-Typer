@@ -38,8 +38,21 @@ const TextStage = ({text}) => {
             setWrong(wrong.slice(0, wrong.length - 1));
         }
 
+        // Handles the logic of an enter key press
+        if (e.which === 13 && outstanding[0] == "\n") {
+            setTyped(typed + "\n");
+            setOutstanding(outstanding.slice(1));
+        } else if (e.which === 13) {
+            setWrong(wrong + "\n");
+            if (outstanding.length > 0) {
+                setReplace(outstanding[0] + replace);
+            }
+            setOutstanding(outstanding.slice(1));
+        }
+
         // If the key pressed is an accepted value process it
         if ((e.which >= 48 && e.which <= 90) || (e.which >=186 && e.which <= 222) || e.which === 32) {
+            
             if (e.key === outstanding[0] && wrong.length === 0) {
                 setTyped(typed + e.key);
                 setOutstanding(outstanding.slice(1));
@@ -56,6 +69,10 @@ const TextStage = ({text}) => {
     const begin = () => {
         document.getElementById("text-stage").focus();
         document.getElementById("begin-button").classList.add("hidden");
+
+        if (document.getElementById("text-input")) {
+            document.getElementById("text-input").classList.add("hidden");
+        }
     }
 
     const reset = () => {
@@ -75,7 +92,7 @@ const TextStage = ({text}) => {
                 
             </div>
  
-            <div id="text-done" className=" flex flex-col justify-center items-center gap-4 text-4xl text-blue-200 hidden">
+            <div id="text-done" className="flex flex-col justify-center items-center gap-4 text-4xl text-blue-200 hidden">
                 <p>WOW you did it!!!</p>
                 <button onClick={reset} className="text-4xl text-blue-200 border-4 p-2 border-blue-200">Reset</button>
             </div>

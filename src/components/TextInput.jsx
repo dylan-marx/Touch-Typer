@@ -6,10 +6,15 @@ const TextInput = ({textSetter, text}) => {
 
     useEffect(() => {
         textSetter(inputText);
+        
     }, [inputText]);
     
     const handleChange = (e) => {
-        setInputText(e.target.value);
+        if (e.target.value.length != 0) {
+            setInputText(e.target.value);
+        } else {
+            setInputText("Please provide some text you want to use.")
+        }
     }
     return (
         <div>
