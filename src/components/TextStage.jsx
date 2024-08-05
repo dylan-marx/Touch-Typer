@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const TextStage = ({text}) => {
     const [typed, setTyped] = useState("");
     const [wrong, setWrong] = useState("");
     const [replace, setReplace] = useState("");
     const [outstanding, setOutstanding] = useState(text);
-    const [initialText, setInitialText] = useState(text);
-
+    const startOfText = useRef("");
     useEffect(() => {
         setOutstanding(text);
-        setInitialText(text);
         setTyped("");
         setWrong("");
         setReplace("");
@@ -20,6 +18,10 @@ const TextStage = ({text}) => {
             document.getElementById("text-stage").classList.add("hidden");
             document.getElementById("text-done").classList.remove("hidden");
         }
+
+        if (startOfText.current) {
+            startOfText.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+          }
     }, [outstanding])
     /**
      * Handles main logic in regards to typing
@@ -43,7 +45,7 @@ const TextStage = ({text}) => {
             setTyped(typed + "\n");
             setOutstanding(outstanding.slice(1));
         } else if (e.which === 13) {
-            setWrong(wrong + "\n");
+            setWrong(wrong + "*");
             if (outstanding.length > 0) {
                 setReplace(outstanding[0] + replace);
             }
@@ -73,13 +75,22 @@ const TextStage = ({text}) => {
         if (document.getElementById("text-input")) {
             document.getElementById("text-input").classList.add("hidden");
         }
+
+        if (startOfText.current) {
+            startOfText.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'start' });
+        }
     }
 
     const reset = () => {
-        setOutstanding(initialText);
+        setOutstanding(text);
+        setTyped("");
+        setWrong("");
+        setReplace("");
+        document.getElementById("text-stage").classList.remove("hidden");
         document.getElementById("text-stage").focus();
-        document.getElementById("begin-button").classList.add("hidden");
+        document.getElementById("begin-button").classList.remove("hidden");
         document.getElementById("text-done").classList.add("hidden");
+
     }
 
     return (
@@ -87,7 +98,7 @@ const TextStage = ({text}) => {
             <div id="text-stage" className="caret-transparent text-4xl text-blue-200 focus:outline-none p-4 lg:cpx-20 py-10 no-underline whitespace-pre-wrap" tabIndex="0" contentEditable onKeyDown={handleTyping} suppressContentEditableWarning={true}>
                 <span className="text-green-400">{typed}</span>
                 <span className="bg-red-400">{wrong}</span>
-                {<span className="underline underline-offset-2">{outstanding[0]}</span>}
+                {<span className="underline underline-offset-2" ref={startOfText}>{outstanding[0]}</span>}
                 {outstanding.slice(1)}
                 
             </div>

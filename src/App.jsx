@@ -19,12 +19,12 @@ function App() {
   }
   return (
     <div className="bg-slate-500 w-screen h-screen">
-      <div className="flex justify-between items-center h-20 space-x-4 p-2 mb-36">
+      <div className="flex justify-between items-center h-20 space-x-6 p-4 mb-24">
         <h1 className="text-4xl text-blue-200 border-4 p-2 border-blue-200">Touch Typer</h1>
         <button id="text-input" onClick={showText} className="text-4xl text-blue-200 border-4 p-2 border-blue-200">Text</button>
       </div>
       
-      <div className="flex justify-center items-center h-52">
+      <div className="flex justify-center items-center">
         {showTextButton &&  <TextInput textSetter={handleText} text={text}/>}
         {showTextStage && <TextStage text={text}/>}
       </div>

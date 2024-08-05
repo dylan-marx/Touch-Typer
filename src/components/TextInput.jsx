@@ -18,7 +18,7 @@ const TextInput = ({textSetter, text}) => {
     }
     return (
         <div>
-            <textarea id="text-input" value={inputText} onChange={handleChange} placeholder="Please provide your own text."></textarea>
+            <textarea id="text-input" value={inputText} onChange={handleChange} placeholder="Please provide your own text." className="text-xl bg-slate-500 w-80 border-2 border-blue-200"></textarea>
         </div>
     );
 }
