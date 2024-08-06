@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    @apply bg-slate-500 text-blue-200; 
+.app {
+    background-image: url('./image/icon.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    
+    @apply text-blue-200;
+}
+
+button {
+    @apply hover:bg-blue-200 hover:text-slate-500 rounded shadow shadow-slate-800;
+}
+
+.title {
+    @apply rounded shadow shadow-slate-800;
 }
