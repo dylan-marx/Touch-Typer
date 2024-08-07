@@ -31,9 +31,11 @@ const TextStage = ({text}) => {
         e.preventDefault();
 
         document.getElementById("begin-button").classList.add("hidden");
-        console.log(e.which);
+        console.log("outstanding => " + outstanding);
+        console.log("wrong => " + wrong);
+        console.log("replace => " + replace);
         // If backspace is pressed replace the character
-        if (e.key === 'Backspace' && replace.length >= 1 && replace.length == wrong.length) {
+        if (e.key === 'Backspace' && replace.length == wrong.length && replace.length > 0) {
             setWrong(wrong.slice(0, wrong.length - 1));
             setOutstanding(replace[0] + outstanding);
             setReplace(replace.slice(1));
@@ -50,6 +52,13 @@ const TextStage = ({text}) => {
             if (outstanding.length > 0) {
                 setReplace(outstanding[0] + replace);
             }
+            setOutstanding(outstanding.slice(1));
+        }
+
+        // Handles logic of a space being incorrectly pressed
+        if (e.which === 32 && outstanding[0] !== e.key) {
+            setWrong(wrong + " ");
+            setReplace(outstanding[0] + replace);
             setOutstanding(outstanding.slice(1));
         }
 
@@ -102,8 +111,8 @@ const TextStage = ({text}) => {
 
     return (
         <div>
-            <div className="flex flex-col items-center bg-slate-500 border-4 border-blue-200 rounded-lg mb-5" spellCheck="false">
-                <div id="text-stage" className="caret-transparent text-4xl focus:outline-none p-4 lg:cpx-20 py-10 no-underline whitespace-pre-wrap" tabIndex="0" contentEditable onKeyDown={handleTyping} suppressContentEditableWarning={true}>
+            <div className="flex flex-col items-center bg-slate-500 border-4 border-blue-200 rounded-lg mb-5 shadow shadow-slate-800" spellCheck="false">
+                <div id="text-stage" className="caret-transparent text-4xl focus:outline-none p-4 lg:cpx-20 py-10 no-underline whitespace-pre-wrap " tabIndex="0" contentEditable onKeyDown={handleTyping} suppressContentEditableWarning={true}>
                     <span className="text-green-400">{typed}</span>
                     <span className="bg-red-400">{wrong}</span>
                     {<span className="underline underline-offset-2 font-semibold" ref={startOfText}>{outstanding[0]}</span>}
