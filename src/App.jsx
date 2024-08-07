@@ -26,10 +26,11 @@ function App() {
       </div>
       
       <div className="flex justify-center items-center mx-64">
-        {showTextButton &&  <TextInput textSetter={handleText} text={text}/>}
-        {showTextStage && <TextStage text={text}/>}
+        
+        {showTextStage && <TextStage text={text || "Please provide some text."}/>}
       </div>
       
+      {showTextButton &&  <TextInput textSetter={handleText} text={text}/>}
     </div>
   )
 }

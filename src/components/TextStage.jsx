@@ -17,6 +17,7 @@ const TextStage = ({text}) => {
         if (outstanding.length === 0 && wrong.length === 0) {
             document.getElementById("text-stage").classList.add("hidden");
             document.getElementById("text-done").classList.remove("hidden");
+            document.getElementById("reset-button").classList.remove("hidden");
         }
 
         if (startOfText.current) {
@@ -31,52 +32,53 @@ const TextStage = ({text}) => {
         e.preventDefault();
 
         document.getElementById("begin-button").classList.add("hidden");
-        console.log("outstanding => " + outstanding);
-        console.log("wrong => " + wrong);
-        console.log("replace => " + replace);
-        // If backspace is pressed replace the character
-        if (e.key === 'Backspace' && replace.length == wrong.length && replace.length > 0) {
-            setWrong(wrong.slice(0, wrong.length - 1));
-            setOutstanding(replace[0] + outstanding);
-            setReplace(replace.slice(1));
-        } else if (wrong.length > 0) {
-            setWrong(wrong.slice(0, wrong.length - 1));
-        }
-
-        // Handles the logic of an enter key press
-        if (e.which === 13 && outstanding[0] == "\n") {
-            setTyped(typed + "\n");
-            setOutstanding(outstanding.slice(1));
-        } else if (e.which === 13) {
-            setWrong(wrong + "*");
-            if (outstanding.length > 0) {
-                setReplace(outstanding[0] + replace);
+        
+        if (e.key !== "CapsLock" && e.key !== "Tab" && e.which !== 220 && !(e.which >= 37 && e.which <= 40)) {
+            // If backspace is pressed replace the character
+            if (e.key === 'Backspace' && replace.length == wrong.length && replace.length > 0) {
+                setWrong(wrong.slice(0, wrong.length - 1));
+                setOutstanding(replace[0] + outstanding);
+                setReplace(replace.slice(1));
+            } else if (wrong.length > 0) {
+                setWrong(wrong.slice(0, wrong.length - 1));
             }
-            setOutstanding(outstanding.slice(1));
-        }
 
-        // Handles logic of a space being incorrectly pressed
-        if (e.which === 32 && outstanding[0] !== e.key) {
-            setWrong(wrong + " ");
-            setReplace(outstanding[0] + replace);
-            setOutstanding(outstanding.slice(1));
-        }
-
-        // If the key pressed is an accepted value process it
-        if ((e.which >= 48 && e.which <= 90) || (e.which >=186 && e.which <= 222) || e.which === 32 || e.which ===  173) {
-            
-            if (e.key === outstanding[0] && wrong.length === 0) {
-                setTyped(typed + e.key);
+            // Handles the logic of an enter key press
+            if (e.which === 13 && outstanding[0] == "\n") {
+                setTyped(typed + "\n");
                 setOutstanding(outstanding.slice(1));
-            } else {
-                setWrong(wrong + e.key);
+            } else if (e.which === 13) {
+                setWrong(wrong + "*");
                 if (outstanding.length > 0) {
                     setReplace(outstanding[0] + replace);
                 }
                 setOutstanding(outstanding.slice(1));
+            }
+
+            // Handles logic of a space being incorrectly pressed
+            if (e.which === 32 && outstanding[0] !== e.key) {
+                setWrong(wrong + " ");
+                setReplace(outstanding[0] + replace);
+                setOutstanding(outstanding.slice(1));
+            }
+
+            // If the key pressed is an accepted value process it
+            if ((e.which >= 48 && e.which <= 90) || (e.which >=186 && e.which <= 222) || e.which === 32 || e.which ===  173) {
+                
+                if (e.key === outstanding[0] && wrong.length === 0) {
+                    setTyped(typed + e.key);
+                    setOutstanding(outstanding.slice(1));
+                } else {
+                    setWrong(wrong + e.key);
+                    if (outstanding.length > 0) {
+                        setReplace(outstanding[0] + replace);
+                    }
+                    setOutstanding(outstanding.slice(1));
                 }
             }
         }
+        
+    }
     
     /**
      * Removes elements not needed and sets focus so the user can start typing
@@ -107,6 +109,7 @@ const TextStage = ({text}) => {
         document.getElementById("begin-button").classList.remove("hidden");
         document.getElementById("text-done").classList.add("hidden");
         document.getElementById("text-input").classList.remove("hidden");
+        document.getElementById("reset-button").classList.add("hidden");
     }
 
     return (
@@ -119,14 +122,16 @@ const TextStage = ({text}) => {
                     {outstanding.slice(1)}
                     
                 </div>
-    
-                <div id="text-done" className="flex flex-col justify-center items-center gap-4 text-4xl text-slate-600 hidden">
-                    <p>WOW you did it!!!</p>
-                    <button onClick={reset} className="text-4xl text-slate-600 border-4 p-2 border-blue-200">Reset</button>
+                <div id="text-done" className="flex flex-col hidden">
+                    <div className="flex flex-col justify-center items-center text-4xl text-blue-200 p-4">
+                        <p>WOW you did it!!!</p>
+                    </div>
+                   
                 </div>
+                
             
             </div>
-
+            <button id="reset-button" onClick={reset} className="text-4xl text-blue-200 border-4 p-2 border-blue-200 w-full bg-slate-500 hidden">Reset</button>
             <button id="begin-button" onClick={begin} className="text-4xl border-4 p-2 border-blue-200 w-full bg-slate-500 mb-10">Begin</button>
         </div>
         
