@@ -19,17 +19,18 @@ function App() {
   }
 
   return (
-    <div className="app flex flex-col bg-slate-500 w-screen">
+    <div className="app flex flex-col  w-screen h-full">
       <div className="flex justify-between items-center h-20 space-x-6 p-4 py-6">
         <h1 className="title text-4xl text-blue-200 border-4 p-2 border-blue-200">Touch Typer</h1>
         <button id="text-input" onClick={showText} className="text-4xl text-blue-200 border-4 p-2 border-blue-200">Text</button>
       </div>
-      
-      <div className="flex justify-center items-center mx-64">
+      {showTextStage &&
+      <div className="flex justify-center items-center">
         
-        {showTextStage && <TextStage text={text || "Please provide some text."}/>}
+         <TextStage text={text || "Please provide some text."}/>
       </div>
-      
+      }
+
       {showTextButton &&  <TextInput textSetter={handleText} text={text}/>}
     </div>
   )

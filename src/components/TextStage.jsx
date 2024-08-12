@@ -32,8 +32,9 @@ const TextStage = ({text}) => {
         e.preventDefault();
 
         document.getElementById("begin-button").classList.add("hidden");
-        
-        if (e.key !== "CapsLock" && e.key !== "Tab" && e.which !== 220 && !(e.which >= 37 && e.which <= 40)) {
+        console.log(e.key);
+
+        if (e.key !== "CapsLock" && e.key !== "Shift" && e.key !== "Tab" && e.which !== 220 && !(e.which >= 37 && e.which <= 40)) {
             // If backspace is pressed replace the character
             if (e.key === 'Backspace' && replace.length == wrong.length && replace.length > 0) {
                 setWrong(wrong.slice(0, wrong.length - 1));
@@ -113,9 +114,9 @@ const TextStage = ({text}) => {
     }
 
     return (
-        <div>
-            <div className="flex flex-col items-center bg-slate-500 border-4 border-blue-200 rounded-lg mb-5 shadow shadow-slate-800" spellCheck="false">
-                <div id="text-stage" className="caret-transparent text-4xl focus:outline-none p-4 lg:cpx-20 py-10 no-underline whitespace-pre-wrap " tabIndex="0" contentEditable onKeyDown={handleTyping} suppressContentEditableWarning={true}>
+        <div className="w-1/2 break-words">
+            <div className="flex flex-col items-center text-blue-200 border-4 border-blue-200 rounded-lg mb-5 shadow shadow-slate-800" spellCheck="false">
+                <div id="text-stage" className="caret-transparent text-4xl focus:outline-none p-4 py-10 no-underline whitespace-pre-wrap break-words" tabIndex="0" contentEditable onKeyDown={handleTyping} suppressContentEditableWarning={true}>
                     <span className="text-green-400">{typed}</span>
                     <span className="bg-red-400">{wrong}</span>
                     {<span className="underline underline-offset-2 font-semibold" ref={startOfText}>{outstanding[0]}</span>}
@@ -131,8 +132,8 @@ const TextStage = ({text}) => {
                 
             
             </div>
-            <button id="reset-button" onClick={reset} className="text-4xl text-blue-200 border-4 p-2 border-blue-200 w-full bg-slate-500 hidden">Reset</button>
-            <button id="begin-button" onClick={begin} className="text-4xl border-4 p-2 border-blue-200 w-full bg-slate-500 mb-10">Begin</button>
+            <button id="reset-button" onClick={reset} className="text-4xl hover:bg-blue-200 hover:text-slate-800 rounded shadow shadow-slate-800 hidden">Reset</button>
+            <button id="begin-button" onClick={begin} className="text-4xl border-4 p-2 text-blue-200 border-blue-200 w-full hover:bg-blue-200 hover:text-slate-800 rounded-lg shadow-slate-800 mb-10">Begin</button>
         </div>
         
     );
