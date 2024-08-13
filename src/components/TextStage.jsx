@@ -5,7 +5,10 @@ const TextStage = ({text}) => {
     const [wrong, setWrong] = useState("");
     const [replace, setReplace] = useState("");
     const [outstanding, setOutstanding] = useState(text);
+    const [typosCount, setTyposCount] = useState(0);
+
     const startOfText = useRef("");
+
     useEffect(() => {
         setOutstanding(text);
         setTyped("");
@@ -40,6 +43,7 @@ const TextStage = ({text}) => {
                 setWrong(wrong.slice(0, wrong.length - 1));
                 setOutstanding(replace[0] + outstanding);
                 setReplace(replace.slice(1));
+                setTyposCount(typosCount + 1);
             } else if (wrong.length > 0) {
                 setWrong(wrong.slice(0, wrong.length - 1));
             }
@@ -50,6 +54,7 @@ const TextStage = ({text}) => {
                 setOutstanding(outstanding.slice(1));
             } else if (e.which === 13) {
                 setWrong(wrong + "*");
+
                 if (outstanding.length > 0) {
                     setReplace(outstanding[0] + replace);
                 }
@@ -58,7 +63,7 @@ const TextStage = ({text}) => {
 
             // Handles logic of a space being incorrectly pressed
             if (e.which === 32 && outstanding[0] !== e.key) {
-                setWrong(wrong + " ");
+
                 setReplace(outstanding[0] + replace);
                 setOutstanding(outstanding.slice(1));
             }
@@ -105,6 +110,7 @@ const TextStage = ({text}) => {
         setTyped("");
         setWrong("");
         setReplace("");
+        setTyposCount(0);
         document.getElementById("text-stage").classList.remove("hidden");
         document.getElementById("text-stage").focus();
         document.getElementById("begin-button").classList.remove("hidden");
@@ -125,14 +131,17 @@ const TextStage = ({text}) => {
                 </div>
                 <div id="text-done" className="flex flex-col hidden">
                     <div className="flex flex-col justify-center items-center text-4xl text-blue-200 p-4">
-                        <p>WOW you did it!!!</p>
+                        {typosCount ===0 && <p>WOW you did it!!!</p>}
+                        {typosCount === 1 && <p>Amazing you only made {typosCount} typo.</p>}
+                        {typosCount <= 5 && typosCount > 1 && <p>You made {typosCount} typo. Nice try</p>}
+                        {typosCount > 5 && <p>You made {typosCount} typos. Feel free to try again.</p>}
                     </div>
                    
                 </div>
                 
             
             </div>
-            <button id="reset-button" onClick={reset} className="text-4xl hover:bg-blue-200 hover:text-slate-800 rounded shadow shadow-slate-800 hidden">Reset</button>
+            <button id="reset-button" onClick={reset} className="text-4xl border-4 p-2 text-blue-200 border-blue-200 w-full hover:bg-blue-200 hover:text-slate-800 rounded-lg shadow-slate-800 mb-10 hidden">Reset</button>
             <button id="begin-button" onClick={begin} className="text-4xl border-4 p-2 text-blue-200 border-blue-200 w-full hover:bg-blue-200 hover:text-slate-800 rounded-lg shadow-slate-800 mb-10">Begin</button>
         </div>
         
